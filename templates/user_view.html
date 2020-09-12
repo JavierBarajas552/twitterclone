@@ -1,0 +1,10 @@
+<h1>{{user.username}}</h1>
+<h2>follows {{follow_count}} people</h2>
+<a href="/follow/{{user.id}}">follow</a>|<a href="/unfollow/{{user.id}}"
+  >unfollow</a
+>
+<h3>tweeted {{tweet_count}}</h3>
+{% for tweet in tweets %}
+<p>{{tweet.body}}</p>
+<a href="/tweet/{{tweet.id}}">link to tweet</a>
+{%endfor%}

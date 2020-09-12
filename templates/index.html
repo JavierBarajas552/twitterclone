@@ -1,0 +1,7 @@
+<a href="/logout/">logout</a> | <a href="/user/{{request.user.id}}">profile</a>
+{% for tweet in tweets %}
+<h1>{{tweet.body}}</h1>
+<h6>{{tweet.time}}</h6>
+<a href="/user/{{tweet.who_tweeted.id}}">{{tweet.who_tweeted}}</a>
+<a href="/tweet/{{tweet.id}}">link to tweet</a>
+{%endfor%}
