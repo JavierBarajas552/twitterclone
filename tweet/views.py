@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from notification.models import NoteModle
 from twitteruser.models import MyUser
-from copy import deepcopy
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
@@ -16,9 +17,12 @@ def index(request):
     return render(request, 'index.html', {'tweets': tweets})
 
 
-@ login_required
-def tweet_veiw(request):
-    if request.method == 'POST':
+class TweetView(LoginRequiredMixin, TemplateView):
+    def get(self, request):
+        form = TweetForm()
+        return render(request, 'generic_form.html', {'form': form})
+
+    def post(self, request):
         form = TweetForm(request.POST)
         if form.is_valid:
             data = form.data
@@ -32,13 +36,14 @@ def tweet_veiw(request):
             the_note.the_users.set(
                 MyUser.objects.filter(following=request.user))
             return HttpResponseRedirect(request.GET.get('next', reverse('homepage')))
-    form = TweetForm()
-    return render(request, 'generic_form.html', {'form': form})
+        else:
+            return render(request, 'generic_form.html', {'form': form})
 
 
-def this_tweet_veiw(request, tweet_id):
-    this_tweet = TweetModel.objects.get(id=tweet_id)
-    return render(request, "tweet_view.html", {'tweet': this_tweet})
+class TweetDetailVeiw(TemplateView):
+    def get(self, request, tweet_id):
+        this_tweet = TweetModel.objects.get(id=tweet_id)
+        return render(request, "tweet_view.html", {'tweet': this_tweet})
 
 
 def this_user_veiw(request, user_id):

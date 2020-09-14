@@ -15,18 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from authentication.views import signup_veiw, login_view, logout_veiw
-from tweet.views import tweet_veiw, index, veiw_notifications, follow_veiw, unfollow_veiw, this_tweet_veiw, this_user_veiw
+from authentication.views import logout_veiw, SignupVeiw, LoginView
+from tweet.views import TweetView, index, veiw_notifications, follow_veiw, unfollow_veiw, TweetDetailVeiw, this_user_veiw
 urlpatterns = [
     path('', index, name="homepage"),
     path('notifications/', veiw_notifications),
     path('user/<int:user_id>', this_user_veiw),
-    path('tweet/<int:tweet_id>', this_tweet_veiw),
+    path('tweet/<int:tweet_id>', TweetDetailVeiw.as_view()),
     path('follow/<int:user_id>', follow_veiw),
     path('unfollow/<int:user_id>', unfollow_veiw),
     path('logout/', logout_veiw),
-    path('login/', login_view),
-    path('tweet/', tweet_veiw),
-    path('signup/', signup_veiw),
+    path('login/', LoginView.as_view()),
+    path('tweet/', TweetView.as_view()),
+    path('signup/', SignupVeiw.as_view()),
     path('admin/', admin.site.urls),
 ]
